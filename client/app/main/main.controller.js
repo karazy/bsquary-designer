@@ -5,10 +5,7 @@ angular.module('bsquaryDesignerApp')
     var EventHandler = $famous['famous/core/EventHandler'],
         sizeFactor = 5,
         Transitionable = $famous['famous/transitions/Transitionable'],
-        Transform = $famous['famous/core/Transform'],
-        boxMenuTransition;
-
-    boxMenuTransition = new Transitionable([0,0,0]);
+        Transform = $famous['famous/core/Transform'];
 
     $scope.boxes = [];
     $scope.boxTypes = [{
@@ -55,6 +52,7 @@ angular.module('bsquaryDesignerApp')
       boxToAdd.handler = new EventHandler();
       boxToAdd.menu.transition = new Transitionable([0,0,0]);
       boxToAdd.menu.opacityTransition = new Transitionable([0]);
+      boxToAdd.menu.rotate = 0;
       // boxToAdd.menu.rotate = Transform.identity;
 
       // $http.post('/api/things', { name: $scope.newThing });
@@ -88,7 +86,7 @@ angular.module('bsquaryDesignerApp')
       })
     }
 
-    $scope.showBoxMenu = function(transition, opacity, box) {
+    $scope.showBoxMenu = function(box) {
       console.log('showBoxMenu');
       if($scope.menuOpenPermitted) {
         if($scope.lastActiveBox && $scope.lastActiveBox == box) {
@@ -126,12 +124,17 @@ angular.module('bsquaryDesignerApp')
     //   }      
     // }
 
-    $scope.boxMenuToggle = function(toggle) {
-      console.log('boxMenuToggle: ' + toggle);      
+    $scope.boxMenuToggle = function(toggle, event) {
+      console.log('boxMenuToggle: ' + toggle);
       if($scope.menuOpenPermitted != toggle) {
         $scope.menuOpenPermitted = toggle;  
       }
-      
+
+      event.target.onmousemove = function() {
+        console.log('boxMenuToggle: prevent menu opening');
+        $scope.menuOpenPermitted = false; 
+        event.target.onmousemove = null;
+      }      
     }
 
 
