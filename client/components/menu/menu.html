@@ -1,0 +1,10 @@
+<div class="main-menu">
+	<h4>Wähle deine Box</h4>
+	<p>
+		<select ng-options="box.name for box in boxTypes" ng-model="boxTypeToAdd" class="form-control">			
+		</select>
+	</p>
+	<p>
+		<button ng-click="addBox(boxTypeToAdd)" class="btn btn-sm btn-primary btn-block">Add Box</button>
+	</p>
+</div>
