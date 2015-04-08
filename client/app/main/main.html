@@ -1,41 +1,41 @@
 <!-- ng-click="hideBoxMenus($event)"-->
-<div ng-controller='MainCtrl' class="design-room" >
-    <div ng-include="'components/menu/menu.html'"></div>
-    <div fa-app>
-<fa-view>
-    <fa-modifier ng-repeat="box in boxes"  fa-translate="box.position" fa-size="box.size" fa-origin="[0.5, 0.5]" fa-align="[0.5, 0.5]">    
-      <fa-draggable fa-pipe-from="box.handler">
-        <!-- <fa-modifier fa-rotate="box.menu.rotate"> -->
-        <fa-modifier 
-              fa-translate="box.menu.transition.get()" fa-opacity="box.menu.opacityTransition">
-              <!-- <fa-modifier >  -->
-            <fa-surface fa-size="[100, 100]">
-              <div style="z-index:1000;">
+<div ng-controller='MainCtrl' class="design-room" >    
+  <div fa-app id="fa-app">
+    <fa-view>
+    <fa-modifier fa-size="[200,100]">
+      <fa-surface>
+        <div ng-include="'components/menu/menu.html'"></div>
+      </fa-surface>
+    </fa-modifier>
+      <fa-modifier ng-repeat="box in boxes" fa-translate="box.position.get()">
+        <fa-draggable fa-pipe-from="box.handler" fa-pipe-to="box.handler">
+           <fa-modifier fa-opacity="box.menu.opacityTransition"  fa-size="box.size" fa-pipe-to="box.handler" fa-origin="box.menu.origin" fa-align="box.menu.align" fa-translate="box.menu.transition.get()">
+            <fa-surface fa-size="[undefined, undefined]">
+              <div>
                 <button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-tint"></span></button>
                 <button ng-click="rotateBox(box)" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-refresh"></span></button>
                 <button ng-click="deleteBox(box)" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></button>
               </div>
             </fa-surface>
-          </fa-modifier>
-          <fa-modifier fa-rotate-z="box.menu.rotate.get()">
-            <fa-surface 
-              fa-pipe-to="box.handler">                 
-              <div>
-              
-               <!--  <div ng-style="{'background-color':'red', 'position':'absolute', 'top':'-40px', 'bottom':'-10px', 'left':'-10px', 'right':'-10px'}">               
-                </div>  -->
-                <div ng-style="{'border':'5px solid ' + box.borderColor, 'background-color':box.color, 'position':'absolute', 'top':'0', 'bottom':'0', 'left':'0', 'right':'0'}"  ng-mousedown="boxMenuToggle(true, $event)" ng-mouseup="showBoxMenu(box)">
-                    <!-- ng-mousemove="boxMenuToggle(false)" -->            
-                </div>
+          </fa-modifier> 
+            <fa-modifier fa-rotate-z="box.menu.rotate.get()" fa-origin="box.origin" fa-align="box.align" fa-size="box.size" >
+              <fa-surface 
+                fa-pipe-to="box.handler" fa-size="[undefined, undefined]">                 
+                <div>
+                
+                 <!--  <div ng-style="{'background-color':'red', 'position':'absolute', 'top':'-40px', 'bottom':'-10px', 'left':'-10px', 'right':'-10px'}">               
+                  </div>  -->
+                  <div ng-style="{'border':'5px solid ' + box.borderColor, 'background-color':box.color, 'position':'absolute', 'top':'0', 'bottom':'0', 'left':'0', 'right':'0'}"  ng-mousedown="boxMenuToggle(true, $event)" ng-mouseup="showBoxMenu(box)">
+                      <!-- ng-mousemove="boxMenuToggle(false)" -->            
+                  </div>
 
-              <!-- ng-include="'components/boxmenu/boxmenu.html'" -->
-              </div>
-            </fa-surface>
-        </fa-modifier>
-          
-      </fa-draggable>         
-    </fa-modifier>
-  </fa-view>
+                <!-- ng-include="'components/boxmenu/boxmenu.html'" -->
+                </div>
+              </fa-surface>
+          </fa-modifier>  
+
+        </fa-draggable>         
+      </fa-modifier>
+    </fa-view>
   </div>
-  
  </div>

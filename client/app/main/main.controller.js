@@ -6,48 +6,48 @@ angular.module('bsquaryDesignerApp')
         sizeFactor = 5,
         Transitionable = $famous['famous/transitions/Transitionable'],
         SpringTransition = $famous['famous/transitions/SpringTransition'],
-        Transform = $famous['famous/core/Transform'];
+        Transform = $famous['famous/core/Transform'],
+        Easing = $famous['famous/transitions/Easing'],
+        defaultBox = {
+          position: [0, 0],
+          origin: [1, 1],
+          align: [0.5, 0.5],
+          menuShown: false,
+          menu: {
+            opacity: 0,
+            origin: [1, 1],
+            align: [0.5, 0.5],
+            openTransition: [10, -30, 0],
+            closeTransition: [0, 0, 0]
+          }
+        }
 
     Transitionable.registerMethod('spring', SpringTransition);
 
+
+
     $scope.boxes = [];
-    $scope.boxTypes = [{
-          name: 'bTokyo - L',
-          size: [40*sizeFactor, 40*sizeFactor],
-          position: [50, 50],
-          origin: [0.5, 0.5],
-          align: [0.5, 0.5],
-          borderColor: '#987969',
-          color: 'green',
-          menuShown: false,
-          menu: {
-            opacity: 0
-          }
-        }, {
+
+    $scope.boxTypes = [
+          angular.extend({
+              name: 'bTokyo - L',
+              size: [40*sizeFactor, 40*sizeFactor],
+              borderColor: '#987969',
+              color: 'green',
+            }, defaultBox), 
+           angular.extend({
           name: 'bHamburg - L',
           size: [50*sizeFactor, 35*sizeFactor],
-          position: [50, 50],
           borderColor: '#987969',
           color: 'blue',
-          menuShown: false,
-          origin: [0.5, 0.5],
-          align: [0.5, 0.5],
-          menu: {
-            opacity: 0
-          }
-        }, {
+        }, defaultBox), 
+         angular.extend({
           name: 'bParis - L',
           size: [25*sizeFactor, 60*sizeFactor],
-          position: [50, 50],
           borderColor: '#987969',
-          color: 'yellow',
-          menuShown: false,
-          origin: [0.5, 0.5],
-          align: [0.5, 0.5],
-          menu: {
-            opacity: 0
-          }
-        }];
+          color: 'yellow'
+         }, defaultBox)
+    ];
 
 
     // $http.get('/api/things').success(function(awesomeThings) {
@@ -59,10 +59,16 @@ angular.module('bsquaryDesignerApp')
       var boxToAdd = angular.copy(type);
 
       boxToAdd.handler = new EventHandler();
+      boxToAdd.position = new Transitionable([200,200,0]);
       boxToAdd.menu.transition = new Transitionable([0,0,0]);
       boxToAdd.menu.opacityTransition = new Transitionable([0]);
       boxToAdd.menu.rotate = new Transitionable(0);
       // boxToAdd.menu.rotate = Transform.identity;
+
+      boxToAdd.handler.on('end', function (e) {
+       boxToAdd.currentPosition = e.position;
+       console.log('New position=' + boxToAdd.currentPosition);
+      });
 
       // $http.post('/api/things', { name: $scope.newThing });
       $scope.boxes.push(boxToAdd);
@@ -76,31 +82,32 @@ angular.module('bsquaryDesignerApp')
         return;
       }
 
-      if(Math.abs(Math.round(box.menu.rotate.get())) == 0) {
-         box.menu.rotate.set(Math.PI / 2, {
-            method: 'spring',
-            period: 500,
-            dampingRatio: 0.4
-          });
-      //   box.menu.rotate = Math.PI/2;
-      } else {
-        // console.log('before box.origin=' + box.origin + ', box.align=' + box.origin + ', box.position=' + box.position);
-        // box.origin = [box.position[0], box.position[1]];
-        // box.align = [box.position[0], box.position[1]];
-        // console.log('after box.origin=' + box.origin + ', box.align=' + box.origin + ', box.position=' + box.position);
+      if(box.size[0] == box.size[1]) {
+        console.error("rotateBox: box is square. don't rotate");
+        return;
+      }
 
-        box.menu.rotate.set(0, {
-            method: 'spring',
-            period: 500,
-            dampingRatio: 0.4
+      if(Math.abs(Math.round(box.menu.rotate.get())) == 0) {
+
+         box.menu.rotate.set(Math.PI / 2, {
+            curve: Easing['outElastic'],
+            duration: 1000,
+            dampingRatio: 0.3
           });
+         box.menu.openTransition = [box.size[0] + 10, box.size[1] - box.size[0] -30, 0];
+         box.menu.closeTransition = [box.size[0], box.size[1] - box.size[0], 0];
+         box.menu.transition.set(box.menu.openTransition, {duration: 300, curve: 'easeOutBounce'});  
+      } else {        
+        box.menu.rotate.set(0, {
+            curve: Easing['outElastic'],
+            duration: 1000,
+            dampingRatio: 0.3
+          });
+        box.menu.openTransition = [10, -30, 0];
+        box.menu.closeTransition = [0, 0, 0];
+        box.menu.transition.set(box.menu.openTransition, {duration: 300, curve: 'easeOutBounce'}); 
       }
       
-
-      // newSize.push(box.size[1]);
-      // newSize.push(box.size[0]);
-      
-      // box.size = newSize;
     }
 
     $scope.deleteBox = function(box) {
@@ -122,17 +129,14 @@ angular.module('bsquaryDesignerApp')
         if($scope.lastActiveBox && $scope.lastActiveBox == box) {
           //same box with open menu clicked
           $scope.hideBoxMenu($scope.lastActiveBox);
-        } else if($scope.lastActiveBox) {
-          //another box clicked
-          $scope.hideBoxMenu($scope.lastActiveBox);
-          $scope.lastActiveBox = box;
-          box.menu.opacityTransition.set([1], {duration: 300, curve: 'easeInOut'});
-          box.menu.transition.set([10, -30, 0], {duration: 300, curve: 'easeOutBounce'});
         } else {
-          //no box prev clicked
+          if($scope.lastActiveBox) {
+            //hide prev clicked box
+            $scope.hideBoxMenu($scope.lastActiveBox); 
+          }
           $scope.lastActiveBox = box;
           box.menu.opacityTransition.set([1], {duration: 300, curve: 'easeInOut'});
-          box.menu.transition.set([10, -30, 0], {duration: 300, curve: 'easeOutBounce'});  
+          box.menu.transition.set(box.menu.openTransition, {duration: 300, curve: 'easeOutBounce'});  
         }        
       }            
     };
@@ -144,15 +148,9 @@ angular.module('bsquaryDesignerApp')
       }
       $scope.lastActiveBox = null;
       box.menu.opacityTransition.set([0], {duration: 300, curve: 'easeInOut'});
-      box.menu.transition.set([0, 0, 0], {duration: 300, curve: 'easeInOut'});      
+      box.menu.transition.set(box.menu.closeTransition, {duration: 300, curve: 'easeInOut'});      
     };
 
-    // $scope.hideBoxMenus = function(event) {
-    //   console.log('hideBoxMenus: ' + event);
-    //   if($scope.lastActiveBox) {
-    //     $scope.hideBoxMenu($scope.lastActiveBox);        
-    //   }      
-    // }
 
     $scope.boxMenuToggle = function(toggle, event) {
       console.log('boxMenuToggle: ' + toggle);
