@@ -49,6 +49,8 @@ angular.module('bsquaryDesignerApp')
          }, defaultBox)
     ];
 
+    $scope.boxTypeToAdd = $scope.boxTypes[0];
+
 
     // $http.get('/api/things').success(function(awesomeThings) {
     //   $scope.awesomeThings = awesomeThings;
