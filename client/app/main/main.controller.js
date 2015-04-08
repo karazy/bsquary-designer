@@ -5,13 +5,18 @@ angular.module('bsquaryDesignerApp')
     var EventHandler = $famous['famous/core/EventHandler'],
         sizeFactor = 5,
         Transitionable = $famous['famous/transitions/Transitionable'],
+        SpringTransition = $famous['famous/transitions/SpringTransition'],
         Transform = $famous['famous/core/Transform'];
+
+    Transitionable.registerMethod('spring', SpringTransition);
 
     $scope.boxes = [];
     $scope.boxTypes = [{
           name: 'bTokyo - L',
           size: [40*sizeFactor, 40*sizeFactor],
           position: [50, 50],
+          origin: [0.5, 0.5],
+          align: [0.5, 0.5],
           borderColor: '#987969',
           color: 'green',
           menuShown: false,
@@ -25,6 +30,8 @@ angular.module('bsquaryDesignerApp')
           borderColor: '#987969',
           color: 'blue',
           menuShown: false,
+          origin: [0.5, 0.5],
+          align: [0.5, 0.5],
           menu: {
             opacity: 0
           }
@@ -35,15 +42,17 @@ angular.module('bsquaryDesignerApp')
           borderColor: '#987969',
           color: 'yellow',
           menuShown: false,
+          origin: [0.5, 0.5],
+          align: [0.5, 0.5],
           menu: {
             opacity: 0
           }
         }];
 
 
-    $http.get('/api/things').success(function(awesomeThings) {
-      $scope.awesomeThings = awesomeThings;
-    });
+    // $http.get('/api/things').success(function(awesomeThings) {
+    //   $scope.awesomeThings = awesomeThings;
+    // });
 
     $scope.addBox = function(type) {
       // var boxToAdd = angular.copy(boxTypes[type]);
@@ -52,7 +61,7 @@ angular.module('bsquaryDesignerApp')
       boxToAdd.handler = new EventHandler();
       boxToAdd.menu.transition = new Transitionable([0,0,0]);
       boxToAdd.menu.opacityTransition = new Transitionable([0]);
-      boxToAdd.menu.rotate = 0;
+      boxToAdd.menu.rotate = new Transitionable(0);
       // boxToAdd.menu.rotate = Transform.identity;
 
       // $http.post('/api/things', { name: $scope.newThing });
@@ -67,10 +76,31 @@ angular.module('bsquaryDesignerApp')
         return;
       }
 
-      newSize.push(box.size[1]);
-      newSize.push(box.size[0]);
+      if(Math.abs(Math.round(box.menu.rotate.get())) == 0) {
+         box.menu.rotate.set(Math.PI / 2, {
+            method: 'spring',
+            period: 500,
+            dampingRatio: 0.4
+          });
+      //   box.menu.rotate = Math.PI/2;
+      } else {
+        // console.log('before box.origin=' + box.origin + ', box.align=' + box.origin + ', box.position=' + box.position);
+        // box.origin = [box.position[0], box.position[1]];
+        // box.align = [box.position[0], box.position[1]];
+        // console.log('after box.origin=' + box.origin + ', box.align=' + box.origin + ', box.position=' + box.position);
+
+        box.menu.rotate.set(0, {
+            method: 'spring',
+            period: 500,
+            dampingRatio: 0.4
+          });
+      }
       
-      box.size = newSize;
+
+      // newSize.push(box.size[1]);
+      // newSize.push(box.size[0]);
+      
+      // box.size = newSize;
     }
 
     $scope.deleteBox = function(box) {

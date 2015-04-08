@@ -3,7 +3,7 @@
     <div ng-include="'components/menu/menu.html'"></div>
     <div fa-app>
 <fa-view>
-    <fa-modifier ng-repeat="box in boxes"  fa-translate="box.position" fa-rotate-z="box.menu.rotate" fa-size="box.size">
+    <fa-modifier ng-repeat="box in boxes"  fa-translate="box.position" fa-size="box.size" fa-origin="[0.5, 0.5]" fa-align="[0.5, 0.5]">    
       <fa-draggable fa-pipe-from="box.handler">
         <!-- <fa-modifier fa-rotate="box.menu.rotate"> -->
         <fa-modifier 
@@ -17,6 +17,7 @@
               </div>
             </fa-surface>
           </fa-modifier>
+          <fa-modifier fa-rotate-z="box.menu.rotate.get()">
             <fa-surface 
               fa-pipe-to="box.handler">                 
               <div>
@@ -30,9 +31,9 @@
               <!-- ng-include="'components/boxmenu/boxmenu.html'" -->
               </div>
             </fa-surface>
-        <!-- </fa-modifier> -->
+        </fa-modifier>
           
-      </fa-draggable>   
+      </fa-draggable>         
     </fa-modifier>
   </fa-view>
   </div>
