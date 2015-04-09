@@ -12,7 +12,7 @@
            <fa-modifier fa-opacity="box.menu.opacityTransition"  fa-size="box.size" fa-pipe-to="box.handler" fa-origin="box.menu.origin" fa-align="box.menu.align" fa-translate="box.menu.transition.get()">
             <fa-surface fa-size="[undefined, undefined]">
               <div>
-                <button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-tint"></span></button>
+                <button class="btn btn-default btn-xs" ng-click="showColorPicker(box)"><span class="glyphicon glyphicon-tint"></span></button>
                 <button ng-click="rotateBox(box)" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-refresh"></span></button>
                 <button ng-click="deleteBox(box)" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></button>
               </div>
@@ -38,7 +38,7 @@
       </fa-modifier>      
     </fa-view>
     <fa-view>
-    <fa-modifier fa-size="[200, 200]" fa-translate="[200,200,0]">
+    <fa-modifier fa-size="[200, 200]" fa-translate="colorPicker.position.get()">
       <fa-grid-layout fa-options="colorGridOptions" >
           <fa-modifier ng-repeat="color in boxColors"
                 fa-size="[undefined, undefined]">

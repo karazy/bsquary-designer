@@ -28,6 +28,10 @@ angular.module('bsquaryDesignerApp')
           }
         }
 
+        $scope.colorPicker = {
+          position: new Transitionable([0,0,0])
+        }
+
         $scope.boxColors = [ 
           {
             name: 'Weiß',
@@ -225,6 +229,10 @@ angular.module('bsquaryDesignerApp')
       $scope.lastActiveBox.color = color.code;
     }
 
+    $scope.showColorPicker = function(box) {
+      $scope.colorPicker.position.set([box.currentPosition[0], box.currentPosition[1], 1], {duration: 300, curve: 'easeOutBounce'});  
+    }
+
     function calculateSizeFactor() {
       //calculate ratio reference width to boxes
       var ratio = referenceWidth / window.innerWidth;
@@ -245,21 +253,21 @@ angular.module('bsquaryDesignerApp')
               defSizeX: 400,
               defSizeY: 400,
               size: [400/sizeFactor, 400/sizeFactor],              
-              color: '#cdd4e4',
+              color: '#fff',
             }, defaultBox), 
            angular.extend({
             name: 'bHamburg - L',
             defSizeX: 500,
             defSizeY: 350,
             size: [500/sizeFactor, 350/sizeFactor],
-            color: 'blue',
+            color: '#fff',
           }, defaultBox), 
          angular.extend({
           name: 'bParis - L',
           defSizeX: 250,
           defSizeY: 600,
           size: [250/sizeFactor, 600/sizeFactor],
-          color: 'yellow'
+          color: '#fff'
          }, defaultBox)
     ];
     }
