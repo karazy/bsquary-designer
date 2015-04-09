@@ -166,31 +166,56 @@ angular.module('bsquaryDesignerApp')
     }
 
     function getBoxTypes() {
+      calculateSizeFactor();
       return [
           angular.extend({
               name: 'bTokyo - L',
-              size: [40*sizeFactor, 40*sizeFactor],
+              defSizeX: 400,
+              defSizeY: 400,
+              size: [400/sizeFactor, 400/sizeFactor],
               borderColor: '#987969',
               color: 'green',
             }, defaultBox), 
            angular.extend({
-          name: 'bHamburg - L',
-          size: [50*sizeFactor, 35*sizeFactor],
-          borderColor: '#987969',
-          color: 'blue',
-        }, defaultBox), 
+            name: 'bHamburg - L',
+            defSizeX: 500,
+            defSizeY: 350,
+            size: [500/sizeFactor, 350/sizeFactor],
+            borderColor: '#987969',
+            color: 'blue',
+          }, defaultBox), 
          angular.extend({
           name: 'bParis - L',
-          size: [25*sizeFactor, 60*sizeFactor],
+          defSizeX: 250,
+          defSizeY: 600,
+          size: [250/sizeFactor, 600/sizeFactor],
           borderColor: '#987969',
           color: 'yellow'
          }, defaultBox)
     ];
     }
 
+    function recalculateBoxSizes() {
+      angular.forEach($scope.boxes, function(box, index) {
+        box.size[0] = box.defSizeX/sizeFactor;
+        box.size[1] = box.defSizeY/sizeFactor;
+      })
+    };
+
     function init() {
-      calculateSizeFactor();
+     // calculateSizeFactor();
       $scope.boxTypes = getBoxTypes();
+      //5000mm = 1500px
+      //400mm = ? px
+      //5000mm/1500 = 1px (=ratio)
+      //5000/1500 * X = 400mm
+      //ratio * X = 400m
+      //
+      window.addEventListener('resize', function() {
+        $scope.boxTypes = getBoxTypes();
+        recalculateBoxSizes();
+        console.log('init:: DEBUG RESIZE');
+     });
     }
 
     init();
