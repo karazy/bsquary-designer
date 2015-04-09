@@ -12,12 +12,13 @@ angular.module('bsquaryDesignerApp')
         /**
         * in cm
         */
-        referenceWidth = 5000,
+        referenceWidth = 2450,        
         defaultBox = {
           position: [0, 0],
           origin: [1, 1],
           align: [0.5, 0.5],
           menuShown: false,
+          borderColor: '#444444',
           menu: {
             opacity: 0,
             origin: [1, 1],
@@ -27,15 +28,74 @@ angular.module('bsquaryDesignerApp')
           }
         }
 
+        $scope.boxColors = [ 
+          {
+            name: 'Weiß',
+            code:  '#ffffff'
+          },
+          {
+            name: 'Bordeauxrot',
+            code: '#a02527'
+          },
+          {
+            name: 'Dunkelbraun',
+            code: '#2f2524'
+          },
+          {
+            name: 'Hellbraun',
+            code: '#d89427'
+          },
+          {
+            name: 'Hellblau',
+            code:  '#bedffe'
+          },
+          {
+            name: 'Dunkelgrün',
+            code:  '#293b25'
+          },
+          {
+            name: 'Schwarz',
+            code: '#000000'
+          },
+          {
+            name: 'Hellgrau',
+            code:  '#cdd4e4'
+          },
+          {
+            name: 'Hellgelb',
+            code:  '#fdea83'
+          },
+          {
+            name: 'Hellgrün',
+            code:  '#5ec95f'
+          },
+          {
+            name: 'Pink',
+            code:  '#e3a5ca'
+          },
+          {
+            name: 'Natur unbeschichtet',
+            code: '#edddc4'
+          }
+          // {
+          //   name: 'Natur beschichtet',
+          //   code: '#edddc4'
+          // } 
+        ];
+
+
+
     Transitionable.registerMethod('spring', SpringTransition);
 
 
 
     $scope.boxes = [];
 
-    $scope.boxTypes = [];
+    $scope.boxTypes = [];  
 
-    $scope.boxTypeToAdd = $scope.boxTypes[0];
+    $scope.colorGridOptions = {
+      dimensions: [4, 4]
+    };  
 
 
     // $http.get('/api/things').success(function(awesomeThings) {
@@ -117,10 +177,17 @@ angular.module('bsquaryDesignerApp')
         if($scope.lastActiveBox && $scope.lastActiveBox == box) {
           //same box with open menu clicked
           $scope.hideBoxMenu($scope.lastActiveBox);
+          // $scope.lastActiveBox.position.set([0,0,1]);
         } else {
+          // box.position.set([0,0,1]);
+          // if($scope.lastActiveBox) {
+          //   $scope.lastActiveBox.position.set([0,0,0]);
+          // }
+
           if($scope.lastActiveBox) {
-            //hide prev clicked box
+            //hide prev clicked box            
             $scope.hideBoxMenu($scope.lastActiveBox); 
+            // $scope.lastActiveBox.position.set([0,0,0]);
           }
           $scope.lastActiveBox = box;
           box.menu.opacityTransition.set([1], {duration: 300, curve: 'easeInOut'});
@@ -140,17 +207,22 @@ angular.module('bsquaryDesignerApp')
     };
 
 
-    $scope.boxMenuToggle = function(toggle, event) {
+    $scope.boxMenuToggle = function(toggle, event, box) {
       console.log('boxMenuToggle: ' + toggle);
       if($scope.menuOpenPermitted != toggle) {
         $scope.menuOpenPermitted = toggle;  
       }
+      
 
       event.target.onmousemove = function() {
         console.log('boxMenuToggle: prevent menu opening');
         $scope.menuOpenPermitted = false; 
         event.target.onmousemove = null;
       }      
+    }
+
+    $scope.changeBoxColor = function(color) {
+      $scope.lastActiveBox.color = color.code;
     }
 
     function calculateSizeFactor() {
@@ -172,16 +244,14 @@ angular.module('bsquaryDesignerApp')
               name: 'bTokyo - L',
               defSizeX: 400,
               defSizeY: 400,
-              size: [400/sizeFactor, 400/sizeFactor],
-              borderColor: '#987969',
-              color: 'green',
+              size: [400/sizeFactor, 400/sizeFactor],              
+              color: '#cdd4e4',
             }, defaultBox), 
            angular.extend({
             name: 'bHamburg - L',
             defSizeX: 500,
             defSizeY: 350,
             size: [500/sizeFactor, 350/sizeFactor],
-            borderColor: '#987969',
             color: 'blue',
           }, defaultBox), 
          angular.extend({
@@ -189,7 +259,6 @@ angular.module('bsquaryDesignerApp')
           defSizeX: 250,
           defSizeY: 600,
           size: [250/sizeFactor, 600/sizeFactor],
-          borderColor: '#987969',
           color: 'yellow'
          }, defaultBox)
     ];
@@ -205,6 +274,7 @@ angular.module('bsquaryDesignerApp')
     function init() {
      // calculateSizeFactor();
       $scope.boxTypes = getBoxTypes();
+      $scope.boxTypeToAdd = $scope.boxTypes[0];
       //5000mm = 1500px
       //400mm = ? px
       //5000mm/1500 = 1px (=ratio)
