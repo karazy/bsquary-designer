@@ -2,12 +2,17 @@
 
 angular.module('bsquaryDesignerApp')
   .controller('MainCtrl', function ($scope, $http, $famous) {
-    var EventHandler = $famous['famous/core/EventHandler'],
-        sizeFactor = 5,
+
+    var EventHandler = $famous['famous/core/EventHandler'],        
         Transitionable = $famous['famous/transitions/Transitionable'],
         SpringTransition = $famous['famous/transitions/SpringTransition'],
         Transform = $famous['famous/core/Transform'],
         Easing = $famous['famous/transitions/Easing'],
+        sizeFactor = 5,
+        /**
+        * in cm
+        */
+        referenceWidth = 5000,
         defaultBox = {
           position: [0, 0],
           origin: [1, 1],
@@ -28,26 +33,7 @@ angular.module('bsquaryDesignerApp')
 
     $scope.boxes = [];
 
-    $scope.boxTypes = [
-          angular.extend({
-              name: 'bTokyo - L',
-              size: [40*sizeFactor, 40*sizeFactor],
-              borderColor: '#987969',
-              color: 'green',
-            }, defaultBox), 
-           angular.extend({
-          name: 'bHamburg - L',
-          size: [50*sizeFactor, 35*sizeFactor],
-          borderColor: '#987969',
-          color: 'blue',
-        }, defaultBox), 
-         angular.extend({
-          name: 'bParis - L',
-          size: [25*sizeFactor, 60*sizeFactor],
-          borderColor: '#987969',
-          color: 'yellow'
-         }, defaultBox)
-    ];
+    $scope.boxTypes = [];
 
     $scope.boxTypeToAdd = $scope.boxTypes[0];
 
@@ -166,6 +152,48 @@ angular.module('bsquaryDesignerApp')
         event.target.onmousemove = null;
       }      
     }
+
+    function calculateSizeFactor() {
+      //calculate ratio reference width to boxes
+      var ratio = referenceWidth / window.innerWidth;
+      // ref = inner; 100%
+      // 1 % = ref/inner;
+      // refBoxWidth = pix?;
+
+      sizeFactor = ratio;
+      console.log('calculateSizeFactor: sizeFactor='+sizeFactor);
+      
+    }
+
+    function getBoxTypes() {
+      return [
+          angular.extend({
+              name: 'bTokyo - L',
+              size: [40*sizeFactor, 40*sizeFactor],
+              borderColor: '#987969',
+              color: 'green',
+            }, defaultBox), 
+           angular.extend({
+          name: 'bHamburg - L',
+          size: [50*sizeFactor, 35*sizeFactor],
+          borderColor: '#987969',
+          color: 'blue',
+        }, defaultBox), 
+         angular.extend({
+          name: 'bParis - L',
+          size: [25*sizeFactor, 60*sizeFactor],
+          borderColor: '#987969',
+          color: 'yellow'
+         }, defaultBox)
+    ];
+    }
+
+    function init() {
+      calculateSizeFactor();
+      $scope.boxTypes = getBoxTypes();
+    }
+
+    init();
 
 
   });
