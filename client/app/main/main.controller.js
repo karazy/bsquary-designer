@@ -210,8 +210,9 @@ angular.module('bsquaryDesignerApp')
       //5000mm/1500 = 1px (=ratio)
       //5000/1500 * X = 400mm
       //ratio * X = 400m
-      //
+      
       window.addEventListener('resize', function() {
+        //TODO add timeout so recalculation doesn't happen multiple times
         $scope.boxTypes = getBoxTypes();
         recalculateBoxSizes();
         console.log('init:: DEBUG RESIZE');
