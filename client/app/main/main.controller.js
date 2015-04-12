@@ -3,11 +3,15 @@
 angular.module('bsquaryDesignerApp')
   .controller('MainCtrl', function ($scope, $http, $famous) {
 
-    var EventHandler = $famous['famous/core/EventHandler'],        
+    var Engine = $famous['famous/core/Engine'],
+        EventHandler = $famous['famous/core/EventHandler'],        
+        Modifier = $famous['famous/core/Modifier'],        
         Transitionable = $famous['famous/transitions/Transitionable'],
         SpringTransition = $famous['famous/transitions/SpringTransition'],
         Transform = $famous['famous/core/Transform'],
         Easing = $famous['famous/transitions/Easing'],
+        Lightbox = $famous['famous/views/Lightbox'],
+        Surface = $famous['famous/physics/constraints/Surface'],
         sizeFactor = 5,
         /**
         * in cm
@@ -19,6 +23,7 @@ angular.module('bsquaryDesignerApp')
           align: [0.5, 0.5],
           menuShown: false,
           borderColor: '#444444',
+          color:  '#ffffff',
           menu: {
             opacity: 0,
             origin: [1, 1],
@@ -96,6 +101,8 @@ angular.module('bsquaryDesignerApp')
     $scope.boxes = [];
 
     $scope.boxTypes = [];  
+
+    $scope.lastActiveBox = null;
 
     $scope.colorGridOptions = {
       dimensions: [4, 4]
@@ -178,21 +185,18 @@ angular.module('bsquaryDesignerApp')
     $scope.showBoxMenu = function(box) {
       console.log('showBoxMenu');
       if($scope.menuOpenPermitted) {
-        if($scope.lastActiveBox && $scope.lastActiveBox == box) {
-          //same box with open menu clicked
+        if($scope.lastActiveBox != null && $scope.lastActiveBox == box) {
+          //same box with open menu clicked                    
           $scope.hideBoxMenu($scope.lastActiveBox);
-          // $scope.lastActiveBox.position.set([0,0,1]);
         } else {
-          // box.position.set([0,0,1]);
-          // if($scope.lastActiveBox) {
-          //   $scope.lastActiveBox.position.set([0,0,0]);
-          // }
+          var pos = box.position.get();
+          box.position.set([pos[0],pos[1],1]);
 
           if($scope.lastActiveBox) {
-            //hide prev clicked box            
+            //hide prev clicked box                        
             $scope.hideBoxMenu($scope.lastActiveBox); 
-            // $scope.lastActiveBox.position.set([0,0,0]);
           }
+          
           $scope.lastActiveBox = box;
           box.menu.opacityTransition.set([1], {duration: 300, curve: 'easeInOut'});
           box.menu.transition.set(box.menu.openTransition, {duration: 300, curve: 'easeOutBounce'});  
@@ -201,10 +205,17 @@ angular.module('bsquaryDesignerApp')
     };
 
     $scope.hideBoxMenu = function(box) {
+      
       console.log('hideBoxMenu');
       if(!box) {
         console.error("hideBoxMenu: no box given");
       }
+
+      if($scope.lastActiveBox) {
+        var lastPos = $scope.lastActiveBox.position.get();
+        $scope.lastActiveBox.position.set([lastPos[0],lastPos[1],0]);
+      }
+      
       $scope.lastActiveBox = null;
       box.menu.opacityTransition.set([0], {duration: 300, curve: 'easeInOut'});
       box.menu.transition.set(box.menu.closeTransition, {duration: 300, curve: 'easeInOut'});      
@@ -230,7 +241,35 @@ angular.module('bsquaryDesignerApp')
     }
 
     $scope.showColorPicker = function(box) {
-      $scope.colorPicker.position.set([box.currentPosition[0], box.currentPosition[1], 1], {duration: 300, curve: 'easeOutBounce'});  
+      // $scope.colorPicker.position.set([box.currentPosition[0], box.currentPosition[1], 1], {duration: 300, curve: 'easeOutBounce'});  
+      var context = Engine.getContexts()[0];
+      var modal = new Surface({
+          size:[500,500],
+          content: '<h1>MODAL</h1>',
+          properties:{
+              backgroundColor:'red'
+          }
+      });
+      var a = $famous;
+      modal.lightbox = new Lightbox({
+        inTransform: Transform.translate(0,500,0),
+        outTransform: Transform.translate(0,500,0),
+        inTransition: {duration:1000, curve:Easing.outElastic},
+        outTransition: {duration:200, curve:Easing.inOutQuad},
+      });
+      // context.add(modal);
+      context.add(new Modifier({origin:[0,0]})).add(modal);
+      // modal.lightbox.show(modal);
+    }
+
+    $scope.toggleBoxForeground = function(toggle, box) {
+      if(toggle) {
+        console.log('toggleBoxForeground: bring to foreground');
+        box.position.set([0,0,100]);
+      } else {
+        console.log('toggleBoxForeground: move to background');
+        box.position.set([0,0,0]);
+      }        
     }
 
     function calculateSizeFactor() {
@@ -249,25 +288,34 @@ angular.module('bsquaryDesignerApp')
       calculateSizeFactor();
       return [
           angular.extend({
-              name: 'bTokyo - L',
+              name: 'bTokyo L',
               defSizeX: 400,
               defSizeY: 400,
-              size: [400/sizeFactor, 400/sizeFactor],              
-              color: '#fff',
-            }, defaultBox), 
+              size: [400/sizeFactor, 400/sizeFactor],
+            }, defaultBox),
+            angular.extend({
+              name: 'bTokyo M',
+              defSizeX: 300,
+              defSizeY: 300,
+              size: [300/sizeFactor, 300/sizeFactor],
+            }, defaultBox),  
            angular.extend({
-            name: 'bHamburg - L',
+            name: 'bHamburg L',
             defSizeX: 500,
             defSizeY: 350,
             size: [500/sizeFactor, 350/sizeFactor],
-            color: '#fff',
+          }, defaultBox), 
+            angular.extend({
+            name: 'bHamburg M',
+            defSizeX: 400,
+            defSizeY: 200,
+            size: [400/sizeFactor, 200/sizeFactor],
           }, defaultBox), 
          angular.extend({
-          name: 'bParis - L',
+          name: 'bParis L',
           defSizeX: 250,
           defSizeY: 600,
           size: [250/sizeFactor, 600/sizeFactor],
-          color: '#fff'
          }, defaultBox)
     ];
     }

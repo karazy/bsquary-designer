@@ -7,7 +7,7 @@
         <div ng-include="'components/menu/menu.html'"></div>
       </fa-surface>
     </fa-modifier>
-      <fa-modifier ng-repeat="box in boxes" fa-translate="box.position.get()">
+      <fa-modifier ng-repeat="box in boxes" fa-translate="box.position.get()" >
         <fa-draggable fa-pipe-from="box.handler" fa-pipe-to="box.handler">
            <fa-modifier fa-opacity="box.menu.opacityTransition"  fa-size="box.size" fa-pipe-to="box.handler" fa-origin="box.menu.origin" fa-align="box.menu.align" fa-translate="box.menu.transition.get()">
             <fa-surface fa-size="[undefined, undefined]">
@@ -18,19 +18,18 @@
               </div>
             </fa-surface>
           </fa-modifier> 
-            <fa-modifier fa-rotate-z="box.menu.rotate.get()" fa-origin="box.origin" fa-align="box.align" fa-size="box.size" >
+            <fa-modifier fa-rotate-z="box.menu.rotate.get()" fa-origin="box.origin" fa-align="box.align" fa-size="box.size">
               <fa-surface 
-                fa-pipe-to="box.handler" fa-size="[undefined, undefined]">                 
-                <div>
+                fa-pipe-to="box.handler" fa-size="[undefined, undefined]" ng-mousedown="boxMenuToggle(true, $event, box)" ng-mouseup="showBoxMenu(box)">                 
                 
-                 <!--  <div ng-style="{'background-color':'red', 'position':'absolute', 'top':'-40px', 'bottom':'-10px', 'left':'-10px', 'right':'-10px'}">               
+                 <!--  <div ng-style="{'background-color':'red', 'position':'absolute', 'top':'-40px', 'bottom':'-10px', 'left':'-10px', 'right':'-10px'}" 
+                 ng-mouseenter="toggleBoxForeground(true, box)" ng-mouseleave="toggleBoxForeground(false, box);">               
                   </div>  -->
-                  <div ng-style="{'border':'5px solid' + box.borderColor, 'background-color':box.color, 'position':'absolute', 'top':'0', 'bottom':'0', 'left':'0', 'right':'0'}"  ng-mousedown="boxMenuToggle(true, $event, box)" ng-mouseup="showBoxMenu(box)">
+                  <div ng-style="{'border':'5px solid' + box.borderColor, 'background-color':box.color, 'position':'absolute', 'top':'0', 'bottom':'0', 'left':'0', 'right':'0'}">
                       <!-- ng-mousemove="boxMenuToggle(false)" -->            
                   </div>
 
                 <!-- ng-include="'components/boxmenu/boxmenu.html'" -->
-                </div>
               </fa-surface>
           </fa-modifier>  
 
@@ -38,14 +37,14 @@
       </fa-modifier>      
     </fa-view>
     <fa-view>
-    <fa-modifier fa-size="[200, 200]" fa-translate="colorPicker.position.get()">
+   <!--  <fa-modifier fa-size="[200, 200]" fa-translate="colorPicker.position.get()">
       <fa-grid-layout fa-options="colorGridOptions" >
           <fa-modifier ng-repeat="color in boxColors"
                 fa-size="[undefined, undefined]">
            <fa-surface fa-background-color="color.code" ng-click="changeBoxColor(color)"></fa-surface>
          </fa-modifier>
       </fa-grid-layout>
-    </fa-modifier>
+    </fa-modifier> -->
     </fa-view>
   </div>
  </div>
