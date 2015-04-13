@@ -12,11 +12,7 @@ angular.module('bsquaryDesignerApp')
         Easing = $famous['famous/transitions/Easing'],
         Lightbox = $famous['famous/views/Lightbox'],
         Surface = $famous['famous/physics/constraints/Surface'],
-        sizeFactor = 5,
-        /**
-        * in cm
-        */
-        referenceWidth = 2450,        
+        sizeFactor = 5,               
         defaultBox = {
           position: [0, 0],
           origin: [1, 1],
@@ -33,8 +29,13 @@ angular.module('bsquaryDesignerApp')
           }
         }
 
+        /**
+        * in cm
+        */
+        $scope.referenceWidth = 5000;
+
         $scope.colorPicker = {
-          position: new Transitionable([10,150,0]),
+          position: new Transitionable([10,200,0]),
           opacityTransition: new Transitionable([0])
         }
 
@@ -92,6 +93,25 @@ angular.module('bsquaryDesignerApp')
           //   code: '#edddc4'
           // } 
         ];
+
+        $scope.referenceWidths = [
+          {
+            display: '5m',
+            value: '5000'
+          },
+          {
+            display: '4m',
+            value: '4000'
+          },
+          {
+            display: '3m',
+            value: '3000'
+          },
+          {
+            display: '2m',
+            value: '2000'
+          }
+        ]
 
 
 
@@ -238,6 +258,20 @@ angular.module('bsquaryDesignerApp')
       }      
     }
 
+    $scope.boxMenuToggleTouch = function(toggle, event, box) {
+      console.log('boxMenuToggle: ' + toggle);
+      if($scope.menuOpenPermitted != toggle) {
+        $scope.menuOpenPermitted = toggle;  
+      }
+      
+
+      event.target.ontouchmove = function() {
+        console.log('boxMenuToggleTouch: prevent menu opening');
+        $scope.menuOpenPermitted = false; 
+        event.target.onmousemove = null;
+      }      
+    }
+
     $scope.changeBoxColor = function(color) {
       if(!$scope.lastActiveBox) {
         console.log("changeBoxColor: no lastActiveBox provided");
@@ -281,7 +315,7 @@ angular.module('bsquaryDesignerApp')
 
     function calculateSizeFactor() {
       //calculate ratio reference width to boxes
-      var ratio = referenceWidth / window.innerWidth;
+      var ratio = $scope.referenceWidth / window.innerWidth;
       // ref = inner; 100%
       // 1 % = ref/inner;
       // refBoxWidth = pix?;
@@ -327,7 +361,10 @@ angular.module('bsquaryDesignerApp')
     ];
     }
 
-    function recalculateBoxSizes() {
+    $scope.recalculateBoxSizes = function() {
+      $scope.boxTypes = getBoxTypes();
+      $scope.boxTypeToAdd = $scope.boxTypes[0];
+
       angular.forEach($scope.boxes, function(box, index) {
         box.size[0] = box.defSizeX/sizeFactor;
         box.size[1] = box.defSizeY/sizeFactor;
@@ -335,7 +372,6 @@ angular.module('bsquaryDesignerApp')
     };
 
     function init() {
-     // calculateSizeFactor();
       $scope.boxTypes = getBoxTypes();
       $scope.boxTypeToAdd = $scope.boxTypes[0];
       //5000mm = 1500px
@@ -347,9 +383,15 @@ angular.module('bsquaryDesignerApp')
       window.addEventListener('resize', function() {
         //TODO add timeout so recalculation doesn't happen multiple times
         $scope.boxTypes = getBoxTypes();
-        recalculateBoxSizes();
-        console.log('init:: DEBUG RESIZE');
+        $scope.recalculateBoxSizes();
+        console.log('init: DEBUG RESIZE');
      });
+
+      $scope.$watch('referenceWidth', function() {
+        console.log('init: referenceWidth changed');
+        $scope.boxTypes = getBoxTypes();
+        $scope.recalculateBoxSizes();
+      });
     }
 
     init();

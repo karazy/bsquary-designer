@@ -1,10 +1,14 @@
 <div class="main-menu">
-	<h4>Wähle deine Box(en)</h4>
+	<h4>Wählen Sie ein Reagalelement und ihre Raumgröße</h4>
 	<p>
 		<select ng-options="box.name for box in boxTypes" ng-model="boxTypeToAdd" class="form-control" >			
 		</select>
 	</p>
 	<p>
-		<button ng-click="addBox(boxTypeToAdd)" class="btn btn-sm btn-primary btn-block">Add Box</button>
+		<button ng-click="addBox(boxTypeToAdd)" class="btn btn-sm btn-primary btn-block">Hinzufügen</button>
+	</p>
+	<p>	
+		<select ng-options="width.value as width.display for width in referenceWidths" ng-model="referenceWidth" class="form-control" >			
+		</select>
 	</p>
 </div>
