@@ -8,7 +8,7 @@
 		<button ng-click="addBox(boxTypeToAdd)" class="btn btn-sm btn-primary btn-block">Hinzufügen</button>
 	</p>
 	<p>	
-		<select ng-options="width.value as width.display for width in referenceWidths" ng-model="referenceWidth" class="form-control" >			
+		<select ng-options="width.widthInMM as width.display for width in referenceWidths" ng-model="selectedReferenceWidth" class="form-control" ng-change="referenceWidthChanged()">			
 		</select>
 	</p>
 </div>

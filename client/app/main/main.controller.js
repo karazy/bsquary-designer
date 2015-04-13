@@ -33,6 +33,7 @@ angular.module('bsquaryDesignerApp')
         * in cm
         */
         $scope.referenceWidth = 5000;
+        $scope.selectedReferenceWidth = $scope.referenceWidth;
 
         $scope.colorPicker = {
           position: new Transitionable([10,200,0]),
@@ -97,19 +98,19 @@ angular.module('bsquaryDesignerApp')
         $scope.referenceWidths = [
           {
             display: '5m',
-            value: '5000'
+            widthInMM: 5000
           },
           {
             display: '4m',
-            value: '4000'
+            widthInMM: 4000
           },
           {
             display: '3m',
-            value: '3000'
+            widthInMM: 3000
           },
           {
             display: '2m',
-            value: '2000'
+            widthInMM: 2000
           }
         ]
 
@@ -195,6 +196,8 @@ angular.module('bsquaryDesignerApp')
         return;
       }
 
+      hideColorPicker();
+
       angular.forEach($scope.boxes, function(b, index) {
         if(b == box) {
           $scope.boxes.splice(index,1);
@@ -208,7 +211,7 @@ angular.module('bsquaryDesignerApp')
         if($scope.lastActiveBox != null && $scope.lastActiveBox == box) {
           //same box with open menu clicked                    
           $scope.hideBoxMenu($scope.lastActiveBox);
-          $scope.colorPicker.opacityTransition.set([0], {duration: 300, curve: 'easeInOut'});
+          hideColorPicker();
         } else {
           var pos = box.position.get();
           box.position.set([pos[0],pos[1],1]);
@@ -361,6 +364,10 @@ angular.module('bsquaryDesignerApp')
     ];
     }
 
+    function hideColorPicker() {
+      $scope.colorPicker.opacityTransition.set([0], {duration: 300, curve: 'easeInOut'});
+    }
+
     $scope.recalculateBoxSizes = function() {
       $scope.boxTypes = getBoxTypes();
       $scope.boxTypeToAdd = $scope.boxTypes[0];
@@ -392,6 +399,12 @@ angular.module('bsquaryDesignerApp')
         $scope.boxTypes = getBoxTypes();
         $scope.recalculateBoxSizes();
       });
+    }
+
+    $scope.referenceWidthChanged = function() {
+      $scope.$digest();
+      $scope.referenceWidth = $scope.referenceWidths[$scope.selectedReferenceWidth].widthInMM;
+      $scope.recalculateBoxSizes();
     }
 
     init();
