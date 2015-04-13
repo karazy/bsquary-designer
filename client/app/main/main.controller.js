@@ -34,7 +34,8 @@ angular.module('bsquaryDesignerApp')
         }
 
         $scope.colorPicker = {
-          position: new Transitionable([0,0,0])
+          position: new Transitionable([10,150,0]),
+          opacityTransition: new Transitionable([0])
         }
 
         $scope.boxColors = [ 
@@ -122,7 +123,6 @@ angular.module('bsquaryDesignerApp')
       boxToAdd.menu.transition = new Transitionable([0,0,0]);
       boxToAdd.menu.opacityTransition = new Transitionable([0]);
       boxToAdd.menu.rotate = new Transitionable(0);
-      // boxToAdd.menu.rotate = Transform.identity;
 
       boxToAdd.handler.on('end', function (e) {
        boxToAdd.currentPosition = e.position;
@@ -188,6 +188,7 @@ angular.module('bsquaryDesignerApp')
         if($scope.lastActiveBox != null && $scope.lastActiveBox == box) {
           //same box with open menu clicked                    
           $scope.hideBoxMenu($scope.lastActiveBox);
+          $scope.colorPicker.opacityTransition.set([0], {duration: 300, curve: 'easeInOut'});
         } else {
           var pos = box.position.get();
           box.position.set([pos[0],pos[1],1]);
@@ -198,8 +199,9 @@ angular.module('bsquaryDesignerApp')
           }
           
           $scope.lastActiveBox = box;
-          box.menu.opacityTransition.set([1], {duration: 300, curve: 'easeInOut'});
+          box.menu.opacityTransition.set([1], {duration: 300, curve: 'easeInOut'});          
           box.menu.transition.set(box.menu.openTransition, {duration: 300, curve: 'easeOutBounce'});  
+          $scope.colorPicker.opacityTransition.set([1], {duration: 300, curve: 'easeInOut'});
         }        
       }            
     };
@@ -237,6 +239,11 @@ angular.module('bsquaryDesignerApp')
     }
 
     $scope.changeBoxColor = function(color) {
+      if(!$scope.lastActiveBox) {
+        console.log("changeBoxColor: no lastActiveBox provided");
+        return;
+      }
+
       $scope.lastActiveBox.color = color.code;
     }
 
