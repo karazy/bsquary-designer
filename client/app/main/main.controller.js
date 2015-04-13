@@ -33,6 +33,7 @@ angular.module('bsquaryDesignerApp')
         * in cm
         */
         $scope.referenceWidth = 5000;
+        //Used to pre select the width
         $scope.selectedReferenceWidth = $scope.referenceWidth;
 
         $scope.colorPicker = {
@@ -136,7 +137,11 @@ angular.module('bsquaryDesignerApp')
     // });
 
     $scope.addBox = function(type) {
-      // var boxToAdd = angular.copy(boxTypes[type]);
+      if(!type) {
+        console.log('addBox: no type given');
+        return;
+      }
+
       var boxToAdd = angular.copy(type);
 
       boxToAdd.handler = new EventHandler();
@@ -145,12 +150,12 @@ angular.module('bsquaryDesignerApp')
       boxToAdd.menu.opacityTransition = new Transitionable([0]);
       boxToAdd.menu.rotate = new Transitionable(0);
 
-      boxToAdd.handler.on('end', function (e) {
-       boxToAdd.currentPosition = e.position;
-       console.log('New position=' + boxToAdd.currentPosition);
-      });
+      //Get box position
+      // boxToAdd.handler.on('end', function (e) {
+      //  boxToAdd.currentPosition = e.position;
+      //  console.log('New position=' + boxToAdd.currentPosition);
+      // });
 
-      // $http.post('/api/things', { name: $scope.newThing });
       $scope.boxes.push(boxToAdd);
     };
 
@@ -393,17 +398,10 @@ angular.module('bsquaryDesignerApp')
         $scope.recalculateBoxSizes();
         console.log('init: DEBUG RESIZE');
      });
-
-      $scope.$watch('referenceWidth', function() {
-        console.log('init: referenceWidth changed');
-        $scope.boxTypes = getBoxTypes();
-        $scope.recalculateBoxSizes();
-      });
     }
 
-    $scope.referenceWidthChanged = function() {
-      $scope.$digest();
-      $scope.referenceWidth = $scope.referenceWidths[$scope.selectedReferenceWidth].widthInMM;
+    $scope.referenceWidthChanged = function(selectedReferenceWidth) {
+      $scope.referenceWidth = selectedReferenceWidth;
       $scope.recalculateBoxSizes();
     }
 

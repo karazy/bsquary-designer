@@ -1,5 +1,5 @@
 <div class="main-menu">
-	<h4>Wählen Sie ein Reagalelement und ihre Raumgröße</h4>
+	<h4>Wählen Sie ein Regalelement und Wandlänge</h4>
 	<p>
 		<select ng-options="box.name for box in boxTypes" ng-model="boxTypeToAdd" class="form-control" >			
 		</select>
@@ -8,7 +8,7 @@
 		<button ng-click="addBox(boxTypeToAdd)" class="btn btn-sm btn-primary btn-block">Hinzufügen</button>
 	</p>
 	<p>	
-		<select ng-options="width.widthInMM as width.display for width in referenceWidths" ng-model="selectedReferenceWidth" class="form-control" ng-change="referenceWidthChanged()">			
+		<select ng-options="width.widthInMM as width.display for width in referenceWidths" ng-model="selectedReferenceWidth" class="form-control" ng-change="referenceWidthChanged(selectedReferenceWidth)">			
 		</select>
 	</p>
 </div>
