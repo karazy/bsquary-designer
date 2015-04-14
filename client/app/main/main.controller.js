@@ -400,6 +400,8 @@ angular.module('bsquaryDesignerApp')
       $scope.recalculateBoxSizes();
     }
 
+
+    //testing fullscreen
     $scope.fullScreen = false;
 
     $scope.toggleFullscreen = function() {
