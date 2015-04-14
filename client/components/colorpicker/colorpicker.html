@@ -1,13 +1,8 @@
 <fa-modifier fa-size="[200, 200]" fa-translate="colorPicker.position.get()" fa-origin="[0,0]" fa-opacity="colorPicker.opacityTransition">	
-	<!--<fa-surface>
-		<h4>Deine Box, deine Farbe</h4>
-	</fa-surface> -->
 	<fa-grid-layout fa-options="colorGridOptions" >
-	      <fa-modifier ng-repeat="color in boxColors"
-	            fa-size="[undefined, undefined]">
-	       <fa-surface fa-background-color="color.code" ng-click="changeBoxColor(color)"></fa-surface>
-	     </fa-modifier>
-	  </fa-grid-layout>
-	  </div>
-  </fa-surface>
+	  <fa-modifier ng-repeat="color in boxColors"
+	        fa-size="[undefined, undefined]">
+	   <fa-surface fa-background-color="color.code" ng-click="changeBoxColor(color)"></fa-surface>
+	 </fa-modifier>
+	</fa-grid-layout>
 </fa-modifier>

@@ -32,12 +32,12 @@ angular.module('bsquaryDesignerApp')
         /**
         * in cm
         */
-        $scope.referenceWidth = 5000;
+        $scope.referenceWidth = 4000;
         //Used to pre select the width
         $scope.selectedReferenceWidth = $scope.referenceWidth;
 
         $scope.colorPicker = {
-          position: new Transitionable([10,200,0]),
+          position: new Transitionable([10,100,0]),
           opacityTransition: new Transitionable([0])
         }
 
@@ -100,19 +100,19 @@ angular.module('bsquaryDesignerApp')
 
         $scope.referenceWidths = [
           {
-            display: '5m',
+            display: '5m Wandlänge',
             widthInMM: 5000
           },
           {
-            display: '4m',
+            display: '4m Wandlänge',
             widthInMM: 4000
           },
           {
-            display: '3m',
+            display: '3m Wandlänge',
             widthInMM: 3000
           },
           {
-            display: '2m',
+            display: '2m Wandlänge',
             widthInMM: 2000
           }
         ]

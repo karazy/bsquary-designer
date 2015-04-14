@@ -1,4 +1,15 @@
 .main-menu {
 	margin: 10px 10px 10px 15px;
-	width: 200px;
+
+	.boxtypeselect {
+		select {
+			width: 185px;
+  			display: inline-block;	
+		}
+
+		button {
+			margin-left: 5px;
+		}
+		
+	}
 }
