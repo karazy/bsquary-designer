@@ -21,8 +21,7 @@
           </fa-modifier> 
             <fa-modifier fa-rotate-z="box.menu.rotate.get()" fa-origin="box.origin"  fa-size="box.size">
               <fa-surface 
-                fa-pipe-to="box.handler" fa-size="[undefined, undefined]" ng-mousedown="boxMenuToggle(true, $event, box)" ng-mouseup="showBoxMenu(box)" fa-touchstart="boxMenuToggleTouch(true, $event, box)" fa-touchend="showBoxMenu(box)">                            
-
+                fa-pipe-to="box.handler" fa-size="[undefined, undefined]" ng-mousedown="boxMenuToggle(true, $event, box)" ng-mouseup="showBoxMenu(box)" fa-touchstart="boxMenuToggleTouch(true, $event, box)" fa-touchend="showBoxMenu(box)">
                   <!-- Formating the box -->
                   <div ng-style="{'border':'5px solid' + box.borderColor, 'background-color':box.color, 'position':'absolute', 'top':'0', 'bottom':'0', 'left':'0', 'right':'0'}">
                   </div>

@@ -385,9 +385,23 @@ angular.module('bsquaryDesignerApp')
       // $scope.boxTypeToAdd = $scope.boxTypes[0];
 
       angular.forEach($scope.boxes, function(box, index) {
+        //recalc box size
         box.size[0] = box.defSizeX/sizeFactor;
         box.size[1] = box.defSizeY/sizeFactor;
-      })
+        //recalc box menu position
+        if(Math.abs(Math.round(box.menu.rotate.get())) == 0) {      
+          box.menu.openTransition = [-box.size[0]+10,-box.size[1]-30,0];
+          box.menu.closeTransition = [-box.size[0],-box.size[1],0];
+          box.menu.transition.set(box.menu.openTransition, {duration: 300, curve: 'easeOutBounce'}); 
+        } else {        
+          box.menu.openTransition = [10, -box.size[0]-30, 0];
+          box.menu.closeTransition = [0, -box.size[0], 0];
+          box.menu.transition.set(box.menu.openTransition, {duration: 300, curve: 'easeOutBounce'});          
+        }
+
+      });
+
+
     };
 
     function init() {
