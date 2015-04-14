@@ -9,7 +9,12 @@
 		<button ng-click="addBox(boxTypeToAdd)" class="btn btn-sm btn-primary btn-block">Hinzufügen</button>
 	</p>
 	<p>	
+	<form class="form-inline">
 		<select ng-options="width.widthInMM as width.display for width in referenceWidths" ng-model="selectedReferenceWidth" class="form-control" ng-change="referenceWidthChanged(selectedReferenceWidth)">			
 		</select>
+
+		<input type="radio" ng-model="roomStyle" value="artificial-background" ng-change="setRoomStyle('artificial-background')" checked> Künstlich
+  		<input type="radio" ng-model="roomStyle" value="real-background" ng-change="setRoomStyle('real-background')"> Echt <br/>
+	</form>
 	</p>
 </div>

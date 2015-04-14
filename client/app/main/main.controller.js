@@ -41,6 +41,8 @@ angular.module('bsquaryDesignerApp')
           opacityTransition: new Transitionable([0])
         }
 
+        $scope.roomStyle = 'artificial-background';
+
         $scope.boxColors = [ 
           {
             name: 'Weiß',
@@ -296,37 +298,9 @@ angular.module('bsquaryDesignerApp')
       $scope.lastActiveBox.color = color.code;
     }
 
-    // $scope.showColorPicker = function(box) {
-    //   // $scope.colorPicker.position.set([box.currentPosition[0], box.currentPosition[1], 1], {duration: 300, curve: 'easeOutBounce'});  
-    //   var context = Engine.getContexts()[0];
-    //   var modal = new Surface({
-    //       size:[500,500],
-    //       content: '<h1>MODAL</h1>',
-    //       properties:{
-    //           backgroundColor:'red'
-    //       }
-    //   });
-    //   var a = $famous;
-    //   modal.lightbox = new Lightbox({
-    //     inTransform: Transform.translate(0,500,0),
-    //     outTransform: Transform.translate(0,500,0),
-    //     inTransition: {duration:1000, curve:Easing.outElastic},
-    //     outTransition: {duration:200, curve:Easing.inOutQuad},
-    //   });
-    //   // context.add(modal);
-    //   context.add(new Modifier({origin:[0,0]})).add(modal);
-    //   // modal.lightbox.show(modal);
-    // }
-
-    // $scope.toggleBoxForeground = function(toggle, box) {
-    //   if(toggle) {
-    //     console.log('toggleBoxForeground: bring to foreground');
-    //     box.position.set([0,0,100]);
-    //   } else {
-    //     console.log('toggleBoxForeground: move to background');
-    //     box.position.set([0,0,0]);
-    //   }        
-    // }
+    $scope.setRoomStyle = function(style) {
+      $scope.roomStyle = style;
+    }
 
     function calculateSizeFactor() {
       //calculate ratio reference width to boxes

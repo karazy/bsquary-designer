@@ -1,6 +1,5 @@
 
-.design-room {
-    background-image: url('../assets/images/background.jpg');
+.design-room {    
     background-repeat:no-repeat;
     /* custom background-position */
     background-position:50% 100%;
@@ -11,5 +10,13 @@
     min-width: 100%;
     min-height: 100%;
     background-size: cover;
+}
+
+.artificial-background {
+    background-image: url('../assets/images/background.jpg');
+}
+
+.real-background {
+    background-image: url('../assets/images/design-room.jpg');
 }
 
