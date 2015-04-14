@@ -382,7 +382,7 @@ angular.module('bsquaryDesignerApp')
 
     $scope.recalculateBoxSizes = function() {
       $scope.boxTypes = getBoxTypes();
-      $scope.boxTypeToAdd = $scope.boxTypes[0];
+      // $scope.boxTypeToAdd = $scope.boxTypes[0];
 
       angular.forEach($scope.boxes, function(box, index) {
         box.size[0] = box.defSizeX/sizeFactor;
@@ -392,7 +392,7 @@ angular.module('bsquaryDesignerApp')
 
     function init() {
       $scope.boxTypes = getBoxTypes();
-      $scope.boxTypeToAdd = $scope.boxTypes[0];
+      // $scope.boxTypeToAdd = $scope.boxTypes[0];
       //5000mm = 1500px
       //400mm = ? px
       //5000mm/1500 = 1px (=ratio)
