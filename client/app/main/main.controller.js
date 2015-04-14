@@ -14,15 +14,15 @@ angular.module('bsquaryDesignerApp')
         Surface = $famous['famous/physics/constraints/Surface'],
         sizeFactor = 5,               
         defaultBox = {
-          position: [0, 0],
           origin: [1, 1],
           align: [0.5, 0.5],
           menuShown: false,
           borderColor: '#444444',
           color:  '#ffffff',
           menu: {
+            size: [100,20],
             opacity: 0,
-            origin: [1, 1],
+            origin: [0, 0],
             align: [0.5, 0.5],
             openTransition: [10, -30, 0],
             closeTransition: [0, 0, 0]
@@ -145,8 +145,10 @@ angular.module('bsquaryDesignerApp')
       var boxToAdd = angular.copy(type);
 
       boxToAdd.handler = new EventHandler();
-      boxToAdd.position = new Transitionable([200,200,0]);
-      boxToAdd.menu.transition = new Transitionable([0,0,0]);
+      boxToAdd.position = new Transitionable([0,0,0]);
+      boxToAdd.menu.transition = new Transitionable([-boxToAdd.size[0],-boxToAdd.size[1],0]);
+      boxToAdd.menu.openTransition = [-boxToAdd.size[0]+10,-boxToAdd.size[1]-30,0];
+      boxToAdd.menu.closeTransition = [-boxToAdd.size[0],-boxToAdd.size[1],0];
       boxToAdd.menu.opacityTransition = new Transitionable([0]);
       boxToAdd.menu.rotate = new Transitionable(0);
 
@@ -178,9 +180,9 @@ angular.module('bsquaryDesignerApp')
             curve: Easing['outElastic'],
             duration: 1000,
             dampingRatio: 0.3
-          });
-         box.menu.openTransition = [box.size[0] + 10, box.size[1] - box.size[0] -30, 0];
-         box.menu.closeTransition = [box.size[0], box.size[1] - box.size[0], 0];
+          });          
+         box.menu.openTransition = [10, -box.size[0]-30, 0];
+         box.menu.closeTransition = [0, -box.size[0], 0];
          box.menu.transition.set(box.menu.openTransition, {duration: 300, curve: 'easeOutBounce'});  
       } else {        
         box.menu.rotate.set(0, {
@@ -188,8 +190,11 @@ angular.module('bsquaryDesignerApp')
             duration: 1000,
             dampingRatio: 0.3
           });
-        box.menu.openTransition = [10, -30, 0];
-        box.menu.closeTransition = [0, 0, 0];
+        // box.menu.openTransition = [10, -30, 0];
+        // box.menu.closeTransition = [-boxToAdd.size[0], -boxToAdd.size[1], 0];
+        box.menu.openTransition = [-box.size[0]+10,-box.size[1]-30,0];
+        box.menu.closeTransition = [-box.size[0],-box.size[1],0];
+        // box.menu.openTransition = [-boxToAdd.size[0] + 10, -boxToAdd.size[1] -30, 0];
         box.menu.transition.set(box.menu.openTransition, {duration: 300, curve: 'easeOutBounce'}); 
       }
       
@@ -203,9 +208,11 @@ angular.module('bsquaryDesignerApp')
 
       hideColorPicker();
 
+
       angular.forEach($scope.boxes, function(b, index) {
         if(b == box) {
-          $scope.boxes.splice(index,1);
+          var removedBox = $scope.boxes.splice(index,1);
+          removedBox = null;
         }
       })
     }
@@ -289,37 +296,37 @@ angular.module('bsquaryDesignerApp')
       $scope.lastActiveBox.color = color.code;
     }
 
-    $scope.showColorPicker = function(box) {
-      // $scope.colorPicker.position.set([box.currentPosition[0], box.currentPosition[1], 1], {duration: 300, curve: 'easeOutBounce'});  
-      var context = Engine.getContexts()[0];
-      var modal = new Surface({
-          size:[500,500],
-          content: '<h1>MODAL</h1>',
-          properties:{
-              backgroundColor:'red'
-          }
-      });
-      var a = $famous;
-      modal.lightbox = new Lightbox({
-        inTransform: Transform.translate(0,500,0),
-        outTransform: Transform.translate(0,500,0),
-        inTransition: {duration:1000, curve:Easing.outElastic},
-        outTransition: {duration:200, curve:Easing.inOutQuad},
-      });
-      // context.add(modal);
-      context.add(new Modifier({origin:[0,0]})).add(modal);
-      // modal.lightbox.show(modal);
-    }
+    // $scope.showColorPicker = function(box) {
+    //   // $scope.colorPicker.position.set([box.currentPosition[0], box.currentPosition[1], 1], {duration: 300, curve: 'easeOutBounce'});  
+    //   var context = Engine.getContexts()[0];
+    //   var modal = new Surface({
+    //       size:[500,500],
+    //       content: '<h1>MODAL</h1>',
+    //       properties:{
+    //           backgroundColor:'red'
+    //       }
+    //   });
+    //   var a = $famous;
+    //   modal.lightbox = new Lightbox({
+    //     inTransform: Transform.translate(0,500,0),
+    //     outTransform: Transform.translate(0,500,0),
+    //     inTransition: {duration:1000, curve:Easing.outElastic},
+    //     outTransition: {duration:200, curve:Easing.inOutQuad},
+    //   });
+    //   // context.add(modal);
+    //   context.add(new Modifier({origin:[0,0]})).add(modal);
+    //   // modal.lightbox.show(modal);
+    // }
 
-    $scope.toggleBoxForeground = function(toggle, box) {
-      if(toggle) {
-        console.log('toggleBoxForeground: bring to foreground');
-        box.position.set([0,0,100]);
-      } else {
-        console.log('toggleBoxForeground: move to background');
-        box.position.set([0,0,0]);
-      }        
-    }
+    // $scope.toggleBoxForeground = function(toggle, box) {
+    //   if(toggle) {
+    //     console.log('toggleBoxForeground: bring to foreground');
+    //     box.position.set([0,0,100]);
+    //   } else {
+    //     console.log('toggleBoxForeground: move to background');
+    //     box.position.set([0,0,0]);
+    //   }        
+    // }
 
     function calculateSizeFactor() {
       //calculate ratio reference width to boxes
