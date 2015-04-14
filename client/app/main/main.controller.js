@@ -400,6 +400,40 @@ angular.module('bsquaryDesignerApp')
       $scope.recalculateBoxSizes();
     }
 
+    $scope.fullScreen = false;
+
+    $scope.toggleFullscreen = function() {
+      function launchIntoFullscreen(element) {
+        if(element.requestFullscreen) {
+          element.requestFullscreen();
+        } else if(element.mozRequestFullScreen) {
+          element.mozRequestFullScreen();
+        } else if(element.webkitRequestFullscreen) {
+          element.webkitRequestFullscreen();
+        } else if(element.msRequestFullscreen) {
+          element.msRequestFullscreen();
+        }            
+      }
+
+      function exitFullscreen() {
+        if(document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if(document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if(document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
+      }
+      // Launch fullscreen for browsers that support it!
+      if($scope.fullScreen) {
+        $scope.fullScreen = false;   
+        exitFullscreen();     
+      } else {
+        $scope.fullScreen = true;   
+        launchIntoFullscreen(document.documentElement);
+      }
+    }
+
     init();
 
 
