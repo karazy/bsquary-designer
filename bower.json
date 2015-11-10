@@ -2,16 +2,16 @@
   "name": "bsquary-designer",
   "version": "0.0.1",
   "dependencies": {
-    "angular": ">=1.2.*",
+    "angular": "~1.4.7",
     "json3": "~3.3.1",
     "es5-shim": "~3.0.1",
     "jquery": "~1.11.0",
     "bootstrap-sass-official": "~3.1.1",
     "bootstrap": "~3.1.1",
-    "angular-resource": ">=1.2.*",
-    "angular-cookies": ">=1.2.*",
-    "angular-sanitize": ">=1.2.*",
-    "angular-route": ">=1.2.*",
+    "angular-resource": "~1.4.7",
+    "angular-cookies": "~1.4.7",
+    "angular-sanitize": "~1.4.7",
+    "angular-route": "~1.4.7",
     "angular-bootstrap": "~0.11.0",
     "font-awesome": ">=4.1.0",
     "lodash": "~2.4.1",
@@ -19,7 +19,7 @@
     "famous": "~0.3.5"
   },
   "devDependencies": {
-    "angular-mocks": ">=1.2.*",
-    "angular-scenario": ">=1.2.*"
+    "angular-mocks": "~1.4.7",
+    "angular-scenario": "~1.4.7"
   }
 }
