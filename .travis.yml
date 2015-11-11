@@ -7,7 +7,7 @@ before_script:
 - bower install
 services: mongodb
 deploy:
- - skip_cleanup: true
+ skip_cleanup: true
 after_success:
  - grunt buildcontrol:openshift
 # deploy:
