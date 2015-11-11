@@ -6,12 +6,14 @@ before_script:
 - gem install sass
 - bower install
 services: mongodb
-deploy:
-  provider: openshift
-  user: dudeversteher@gmail.com
-  password:
-    secure: AO40xuGPHa6unsX8IpwgfmUDtHmDZG9Vw1tAEVim2c3Ca06OfNxO2H9AIq1tsa5begPwxqkx3qL6R8uA3xgtt9tmif+2LFU1/MiYs0gGsdKZKwo2Zx2G0jLiK8fUIMVk2YDG7SxYdm/MZ0ukXnqeEIzd3Ra89HkkGhbycymbr8WcHLL7JM8Uu53uNI5dopZY2/uaS3Y11a/bCz4uGorPWlR7TQn2YvoSPfci9f3zUia6v1p2dbeaqtMJFrKsUYodLJYeD3achZAv3hZXidwYa9k0rmF0CDANANX6Kkcfy9LK2BZyiF4hvjzcHakQnnZQRzOyOHNY1sdZ8+wc2w7fQb/kZCtE16E7Q3ILQPG7irAwZi/8sQQvRPKgQqrvJb+I9RtS0YnLUSgEK7F0cq4+xrUpRWrGlyWB8gKLQE2NWHoOEVpq4edJhzkhPIVsqjJqwooeQR6bkja/va71X9ZC1JLqJE+JwW8klFmpQh1RzzzQnvYDxIZLl1lQaNG6k/rZJm3qGyUwK6hOEhv0MR8oZUUPoV2Tds3mVnkepNge15UfDPF3IyAzoHjuqXQ0JVqEDROpxgc9kuWDdqOW65NDH7LgX+th6lebUpVG8BXEkkmasGCZ9TZBTAcpB/KONOhgSPgWpl+i6xiGyO4x3KgjVhob9CVMBYHTHMaMSYSRxpM=
-  app: designer
-  domain: bsquary
-  on:
-    repo: karazy/bsquary-designer
+after_success:
+ - grunt buildcontrol:openshift
+# deploy:
+#   provider: openshift
+#   user: dudeversteher@gmail.com
+#   password:
+#     secure: AO40xuGPHa6unsX8IpwgfmUDtHmDZG9Vw1tAEVim2c3Ca06OfNxO2H9AIq1tsa5begPwxqkx3qL6R8uA3xgtt9tmif+2LFU1/MiYs0gGsdKZKwo2Zx2G0jLiK8fUIMVk2YDG7SxYdm/MZ0ukXnqeEIzd3Ra89HkkGhbycymbr8WcHLL7JM8Uu53uNI5dopZY2/uaS3Y11a/bCz4uGorPWlR7TQn2YvoSPfci9f3zUia6v1p2dbeaqtMJFrKsUYodLJYeD3achZAv3hZXidwYa9k0rmF0CDANANX6Kkcfy9LK2BZyiF4hvjzcHakQnnZQRzOyOHNY1sdZ8+wc2w7fQb/kZCtE16E7Q3ILQPG7irAwZi/8sQQvRPKgQqrvJb+I9RtS0YnLUSgEK7F0cq4+xrUpRWrGlyWB8gKLQE2NWHoOEVpq4edJhzkhPIVsqjJqwooeQR6bkja/va71X9ZC1JLqJE+JwW8klFmpQh1RzzzQnvYDxIZLl1lQaNG6k/rZJm3qGyUwK6hOEhv0MR8oZUUPoV2Tds3mVnkepNge15UfDPF3IyAzoHjuqXQ0JVqEDROpxgc9kuWDdqOW65NDH7LgX+th6lebUpVG8BXEkkmasGCZ9TZBTAcpB/KONOhgSPgWpl+i6xiGyO4x3KgjVhob9CVMBYHTHMaMSYSRxpM=
+#   app: designer
+#   domain: bsquary
+#   on:
+#     repo: karazy/bsquary-designer
