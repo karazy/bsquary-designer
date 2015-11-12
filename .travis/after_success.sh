@@ -8,10 +8,11 @@ echo "   UserKnownHostsFile=/dev/null" >> ~/.ssh/config;
 
 if [[ $TRAVIS_PULL_REQUEST == "false" && $TRAVIS_BRANCH == "master" ]]
   then 
+    ssh-keygen -t rsa -f ~/.ssh/id_rsa -q -N "" -n "Travis_Openshift"
   	echo "Install rhc"
   	gem install rhc 
   	echo "rhc setup"
-  	echo yes | rhc setup --server openshift.redhat.com -l $OPENSHIFT_EMAIL -p $OPENSHIFT_PW --create-token --insecure
+  	echo yes | rhc setup --server openshift.redhat.com -l $OPENSHIFT_EMAIL -p $OPENSHIFT_PW --create-token --insecure --ssl-client-key-file ~./ssh/id_rsa
     echo "Setup and configure dist folder"
   	mkdir -p dist/openshift/markers/
   	touch dist/openshift/markers/hot_deploy 
