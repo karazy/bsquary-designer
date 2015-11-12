@@ -1,4 +1,4 @@
-# BSquary - Designer
+# bSquary - Designer
 
 [![Build Status](https://travis-ci.org/karazy/bsquary-designer.svg?branch=master)](https://travis-ci.org/karazy/bsquary-designer)
 
