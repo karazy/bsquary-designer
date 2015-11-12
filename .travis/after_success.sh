@@ -6,7 +6,7 @@ if [[ $TRAVIS_PULL_REQUEST == "false" && $TRAVIS_BRANCH == "master" ]]
   	echo "Install rhc"
   	gem install rhc 
   	echo "rhc setup"
-  	rhc setup --server openshift.redhat.com -l $OPENSHIFT_EMAIL -p $OPENSHIFT_PW --create-token --insecure
+  	rhc setup --server openshift.redhat.com -l $OPENSHIFT_EMAIL -p $OPENSHIFT_PW --no-create-token --noprompt --insecure
     echo "Setup and configure dist folder"
   	mkdir -p dist/openshift/markers/
   	touch dist/openshift/markers/hot_deploy 
