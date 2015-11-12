@@ -9,6 +9,7 @@ if [[ $TRAVIS_PULL_REQUEST == "false" && $TRAVIS_BRANCH == "master" ]]
   then 
   	echo "Install rhc"
   	get install rhc 
+  	echo "rhc setup"
   	rhc setup --server openshift.redhat.com -l $OPENSHIFT_EMAIL -p $OPENSHIFT_PW --create-token --insecure
     echo "Setup and configure dist folder"
   	mkdir -p dist/openshift/markers/

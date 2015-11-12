@@ -7,7 +7,7 @@ before_script:
 - bower install
 services: mongodb
 after_success:
- - bash ./travis/after_success.sh
+ - bash .travis/after_success.sh
 # deploy:
 #   provider: openshift
 #   user: dudeversteher@gmail.com
