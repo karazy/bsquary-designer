@@ -1,7 +1,7 @@
 git config --global user.email $OPENSHIFT_EMAIL
 git config --global user.name $OPENSHIFT_NAME
 echo "Deploying to openshift"
-echo "Host redhat.com" >> ~/.ssh/config
+echo "Host designer-bsquary.rhcloud.com" >> ~/.ssh/config
 echo "   StrictHostKeyChecking no" >> ~/.ssh/config
 echo "   CheckHostIP no" >> ~/.ssh/config; 
 echo "   UserKnownHostsFile=/dev/null" >> ~/.ssh/config;
@@ -25,7 +25,7 @@ if [[ $TRAVIS_PULL_REQUEST == "false" && $TRAVIS_BRANCH == "master" ]]
   	echo "Grunt build"
   	grunt build
   	echo "Grunt buildcontrol:openshift"
-  	grunt buildcontrol:openshift
+  	echo yes | grunt buildcontrol:openshift
 
 fi
 if [[ $TRAVIS_PULL_REQUEST == "false" ]]
