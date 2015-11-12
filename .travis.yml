@@ -6,10 +6,8 @@ before_script:
 - gem install sass
 - bower install
 services: mongodb
-deploy:
- skip_cleanup: true
 after_success:
- - grunt buildcontrol:openshift
+ - bash ./travis/after_success.sh
 # deploy:
 #   provider: openshift
 #   user: dudeversteher@gmail.com
