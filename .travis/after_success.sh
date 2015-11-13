@@ -12,7 +12,7 @@ if [[ $TRAVIS_PULL_REQUEST == "false" && $TRAVIS_BRANCH == "master" ]]
   	#echo "Install rhc"
   	#gem install rhc
 
-  	git clone ssh://5643bddd7628e141cc00001b@designer-bsquary.rhcloud.com/~/git/designer.git/ dist
+  	git clone $OPENSHIFT_REPO dist
 
   	#echo "rhc setup"
   	#echo yes | rhc setup --server openshift.redhat.com -l $OPENSHIFT_EMAIL -p $OPENSHIFT_PW --create-token --insecure --ssl-client-key-file ~./ssh/id_rsa
