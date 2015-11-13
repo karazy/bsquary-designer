@@ -11,15 +11,21 @@ if [[ $TRAVIS_PULL_REQUEST == "false" && $TRAVIS_BRANCH == "master" ]]
     #ssh-keygen -t rsa -f ~/.ssh/id_rsa -q -N "" -n "Travis_Openshift"
   	#echo "Install rhc"
   	#gem install rhc
+    mkdir dist
+    cd dist/
+    git init
+    git remote add openshift $OPENSHIFT_REPO
+    git pull openshift master
 
-  	git clone $OPENSHIFT_REPO dist
+  	#git clone $OPENSHIFT_REPO dist
 
   	#echo "rhc setup"
   	#echo yes | rhc setup --server openshift.redhat.com -l $OPENSHIFT_EMAIL -p $OPENSHIFT_PW --create-token --insecure --ssl-client-key-file ~./ssh/id_rsa
     echo "Setup and configure dist folder"
-  	mkdir -p dist/openshift/markers/
-  	touch dist/openshift/markers/hot_deploy 
-	echo "Grunt build"
+  	mkdir -p .openshift/markers/
+  	touch .openshift/markers/hot_deploy 
+    cd ..
+	  echo "Grunt build"
   	grunt build
 
   	#echo "Adding "$OPENSHIFT_REPO" as git repo" 	
