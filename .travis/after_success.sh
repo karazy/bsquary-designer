@@ -8,25 +8,34 @@ echo "   UserKnownHostsFile=/dev/null" >> ~/.ssh/config;
 
 if [[ $TRAVIS_PULL_REQUEST == "false" && $TRAVIS_BRANCH == "master" ]]
   then 
-    ssh-keygen -t rsa -f ~/.ssh/id_rsa -q -N "" -n "Travis_Openshift"
-  	echo "Install rhc"
-  	gem install rhc 
-  	echo "rhc setup"
-  	echo yes | rhc setup --server openshift.redhat.com -l $OPENSHIFT_EMAIL -p $OPENSHIFT_PW --create-token --insecure --ssl-client-key-file ~./ssh/id_rsa
+    #ssh-keygen -t rsa -f ~/.ssh/id_rsa -q -N "" -n "Travis_Openshift"
+  	#echo "Install rhc"
+  	#gem install rhc
+
+  	git clone ssh://5643bddd7628e141cc00001b@designer-bsquary.rhcloud.com/~/git/designer.git/ dist
+
+  	#echo "rhc setup"
+  	#echo yes | rhc setup --server openshift.redhat.com -l $OPENSHIFT_EMAIL -p $OPENSHIFT_PW --create-token --insecure --ssl-client-key-file ~./ssh/id_rsa
     echo "Setup and configure dist folder"
   	mkdir -p dist/openshift/markers/
   	touch dist/openshift/markers/hot_deploy 
-
-  	echo "Adding "$OPENSHIFT_REPO" as git repo" 	
-  	cd dist/
-  	git init
-  	git remote add openshift $OPENSHIFT_REPO
-  	cd ..
-
-  	echo "Grunt build"
+	echo "Grunt build"
   	grunt build
-  	echo "Grunt buildcontrol:openshift"
-  	echo yes | grunt buildcontrol:openshift
+
+  	#echo "Adding "$OPENSHIFT_REPO" as git repo" 	
+  	cd dist/
+  	#git init
+  	#git remote add openshift $OPENSHIFT_REPO
+  	#cd ..
+  	echo 'Push to openshift repo'
+  	git add -A
+  	git commit -m "Travis CI"
+  	git remote rename origin openshift
+  	git push openshift master
+
+  	
+  	#echo "Grunt buildcontrol:openshift"
+  	#echo yes | grunt buildcontrol:openshift
 
 fi
 if [[ $TRAVIS_PULL_REQUEST == "false" ]]
